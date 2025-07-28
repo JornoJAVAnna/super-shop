@@ -37,7 +37,6 @@ public class JwtUtils {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (JwtException e) {
-            // токен неверный или истёк
             return false;
         }
     }

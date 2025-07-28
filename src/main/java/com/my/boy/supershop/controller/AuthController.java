@@ -3,6 +3,7 @@ package com.my.boy.supershop.controller;
 import com.my.boy.supershop.dto.LoginRequest;
 import com.my.boy.supershop.dto.RegisterRequest;
 import com.my.boy.supershop.service.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +21,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody RegisterRequest request) {
+    public ResponseEntity<String> registerUser(@RequestBody @Valid RegisterRequest request) {
         try {
             authService.register(request);
             return ResponseEntity.ok("User registered successfully");

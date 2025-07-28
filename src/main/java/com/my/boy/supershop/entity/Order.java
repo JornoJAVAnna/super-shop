@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @Setter
 @Getter
-@Table(name = "orders") // "order" — зарезервированное слово
+@Table(name = "orders")
 public class Order {
 
     @Id
@@ -21,21 +21,17 @@ public class Order {
     @SequenceGenerator(name = "order_id_seq", sequenceName = "order_id_seq", allocationSize = 1)
     private Long id;
 
-    // Владелец заказа
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    // Время заказа
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    // Состав заказа
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items = new ArrayList<>();
 
     public void setItems(List<OrderItem> items) {
         this.items = items;
-        // назначаем обратную связь
         for (OrderItem item : items) {
             item.setOrder(this);
         }

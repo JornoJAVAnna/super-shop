@@ -15,12 +15,10 @@ public class OrderItem {
     @SequenceGenerator(name = "oi_id_seq", sequenceName = "oi_id_seq", allocationSize = 1)
     private Long id;
 
-    // Заказ, которому принадлежит эта позиция
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
 
-    // Товар
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;

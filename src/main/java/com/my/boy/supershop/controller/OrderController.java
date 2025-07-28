@@ -2,7 +2,7 @@ package com.my.boy.supershop.controller;
 
 import com.my.boy.supershop.dto.OrderDto;
 import com.my.boy.supershop.dto.OrderItemDto;
-import com.my.boy.supershop.service.OrderService;
+import com.my.boy.supershop.service.impl.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -19,25 +19,22 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    // Создать заказ — доступен авторизованным пользователям с ролью USER или ADMIN
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<OrderDto> createOrder(@RequestBody List<OrderItemDto> items) {
-        OrderDto createdOrder = orderService.createOrder(items);
-        return ResponseEntity.ok(createdOrder);
+        OrderDto created = orderService.createOrder(items);
+        return ResponseEntity.ok(created);
     }
 
-    // Получить свои заказы — для USER и ADMIN (ADMIN увидит только свои заказы)
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+
     @GetMapping("/my")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<OrderDto>> getMyOrders() {
-        List<OrderDto> orders = orderService.getOrdersForCurrentUser();
-        return ResponseEntity.ok(orders);
+        return ResponseEntity.ok(orderService.getMyOrders());
     }
 
-    // Получить все заказы — только для ADMIN
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<OrderDto>> getAllOrders() {
         List<OrderDto> orders = orderService.getAllOrders();
         return ResponseEntity.ok(orders);
